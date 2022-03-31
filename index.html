@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Новости</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+<div id="app">
+    <table class="table">
+        <tr>
+            <th>Направления</th>
+            <th>Дата</th>
+            <th>Кампания</th>
+            <th>Новость</th>
+        </tr>
+        <tr v-for = "(post, i) in news">
+            <td>{{post.group_id}}</td>
+            <td class="date">{{post.news_date}}</td>
+            <td>{{post.site_id}}</td>
+            <td>
+                <a :href="post.link" target="_blank">
+                    {{post.title}}
+                </a>
+            </td>
+
+        </tr>
+    </table>
+
+</div>
+
+</body>
+
+<script src="js/js.js"></script>
+
+
+</html>
