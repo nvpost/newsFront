@@ -1,10 +1,23 @@
 <?php
-
+function deb($v){
+    echo "<pre>";
+    print_r($v);
+    echo "</pre>";
+}
 $db = new PDO('mysql:host=localhost;dbname=news_site',
     'root',
     ''
 );
 
-$res = $db->query('SELECT * from news');
+$all_data = $db->query('SELECT * from news ORDER BY news_date DESC ')
+    ->fetchAll();
 
-echo json_encode(['data'=>$res->fetchAll()]);
+//получаем теги
+$tags_res = $db->query('SELECT group_id from news GROUP BY group_id')
+    ->fetchAll(PDO::FETCH_COLUMN);
+$tags = array_unique(explode(', ', implode(', ', $tags_res)));
+
+echo json_encode([
+    'data'=>$all_data,
+    'tags'=>$tags
+    ]);

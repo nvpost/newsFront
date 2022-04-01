@@ -3,7 +3,7 @@ let app = new Vue({
     'el': '#app',
     data() {
         return {
-            'mes': 'ni',
+            'tags': [],
             'news': []
         }
     },
@@ -14,6 +14,7 @@ let app = new Vue({
             .then(res=>res.json())
             .then((data) => {
                 this.news = data.data
+                this.tags = data.tags
             })
     },
 
