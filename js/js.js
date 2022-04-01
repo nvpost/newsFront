@@ -4,9 +4,11 @@ let app = new Vue({
     data() {
         return {
             'tags': [],
-            'origin_news':[],
+            'origin_news': [],
             'news': [],
-            'activeTags':[],
+            'sites': [],
+            'activeTags': [],
+            'counters': []
         }
     },
     beforeCreate(){
@@ -17,14 +19,33 @@ let app = new Vue({
             .then((data) => {
                 this.news = data.data
                 this.tags = data.tags
+                this.sites = data.sites
 
                 this.origin_news = this.news
+
+                this.setCouters()
+
             })
     },
 
     methods:{
         d(date){
             return new Date(date)
+        },
+        setCouters(){
+            this.news.forEach(i=>{
+                app.tags.forEach(j=>{
+                    if(i.group_id.indexOf(j)!=-1){
+                        if(!app.counters[j]){
+                            app.counters[j]=1
+                        }else{
+                            app.counters[j]++
+                        }
+
+                    }
+
+                })
+            })
         },
         addTag(t){
             if(this.activeTags.indexOf(t)!=-1){
@@ -49,7 +70,10 @@ let app = new Vue({
                return returnFlag
            })
             this.news = ns
-        }
+        },
+
 
     }
 })
+
+
