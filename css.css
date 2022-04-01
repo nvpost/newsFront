@@ -1,3 +1,8 @@
+.conatiner{
+    width: 1200px;
+    margin: 0 auto;
+}
+
 .table {
     width: 100%;
     margin-bottom: 20px;
@@ -21,4 +26,27 @@
 }
 .date{
     width: 100px;
+}
+
+.tags{
+    display: flex;
+    padding: 5px;
+}
+.tag {
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    box-shadow: 1px 1px 3px #d9d9d9;
+    transition: all 0.3s;
+}
+.tag:hover{
+    box-shadow: inset 1px 1px 10px #d9d9d9;
+}
+
+.active{
+    background-color: #008f86;
+    color: #fff;
+
 }
