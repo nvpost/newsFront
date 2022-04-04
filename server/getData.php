@@ -18,7 +18,7 @@ $tags_res = $db->query('SELECT group_id from news GROUP BY group_id')
 $tags = array_values(array_unique(explode(', ', implode(', ', $tags_res))));
 
 
-$sites = $db->query('SELECT * from news_donor')
+$sites = $db->query('SELECT * from news_donor GROUP BY name ORDER BY category')
     ->fetchAll();
 
 echo json_encode([

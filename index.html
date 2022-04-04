@@ -14,10 +14,10 @@
     <div id="app">
         <div class="info">
             <div class="news_counter">
-                Всего новостей: {{news.length}}
+                Всего новостей: {{news.length}} из {{origin_news.length}}
             </div>
             <div class="actions">
-                <div class="tags">
+                <div class="tags" v-if="site.length==0">
                     <div
                             v-for="(tag, index) in tags"
                             class="tag"
@@ -26,24 +26,33 @@
                             >{{tag}} {{counters[tag]}}
                     </div>
                 </div>
+                <div class="site_info" v-else>
+                    Новости компании: <a :href="site.name" target="_blank">{{site.name}}</a>
+                    <span class="close" @click="closeSite()"> X </span>
+                </div>
                 <div class="sites">
-                    <select name="sites">
+                    <select name="sites"
+                    @change="setSite($event)"
+                    >
+                        <option>Сайт</option>
                         <option v-for="(s, index) in sites"
-                                :value="s.name">{{s.name}} ({{s.category}})</option>
+                                :value="s.name">{{s.name}} ({{s.category}}) - {{siteNewsCounter[s.name]}}</option>
                     </select>
                 </div>
             </div>
         </div>
         <table class="table">
             <tr>
-                <th>Направления</th>
+                <th>Направление</th>
                 <th>Дата</th>
                 <th>Компания</th>
                 <th>Новость</th>
             </tr>
             <tr v-for = "(post, i) in news">
                 <td>{{post.group_id}}</td>
-                <td class="date">{{post.news_date}}</td>
+                <td class="date">
+                    {{date_tranform(post.news_date)}}
+                </td>
                 <td>{{post.site_id}}</td>
                 <td>
                     <a :href="post.link" target="_blank">
