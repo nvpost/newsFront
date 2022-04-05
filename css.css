@@ -9,6 +9,19 @@ html{
     width: 1200px;
     margin: 0 auto;
 }
+.table{
+    color: #718096;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.table a{
+    color: #718096;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.table a:hover{
+    color: #333436;
+}
 
 .table {
     width: 100%;

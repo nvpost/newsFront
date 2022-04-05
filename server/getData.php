@@ -20,9 +20,12 @@ $tags = array_values(array_unique(explode(', ', implode(', ', $tags_res))));
 
 $sites = $db->query('SELECT * from news_donor GROUP BY name ORDER BY category')
     ->fetchAll();
+$langs = $db->query('SELECT lang from news_donor GROUP BY lang')
+    ->fetchAll();
 
 echo json_encode([
     'data'=>$all_data,
     'tags'=>$tags,
     'sites'=>$sites,
+    'langs' => $langs
     ]);

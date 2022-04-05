@@ -30,13 +30,16 @@
                     Новости компании: <a :href="site.name" target="_blank">{{site.name}}</a>
                     <span class="close" @click="closeSite()"> X </span>
                 </div>
+                <div class="langs">
+
+                </div>
                 <div class="sites">
                     <select name="sites"
                     @change="setSite($event)"
                     >
                         <option>Сайт</option>
                         <option v-for="(s, index) in sites"
-                                :value="s.name">{{s.name}} ({{s.category}}) - {{siteNewsCounter[s.name]}}</option>
+                                :value="s.name">{{s.name}} ({{s.category}} / {{s.lang}}) - {{siteNewsCounter[s.name]}}</option>
                     </select>
                 </div>
             </div>
@@ -46,6 +49,7 @@
                 <th>Направление</th>
                 <th>Дата</th>
                 <th>Компания</th>
+                <th>Язык</th>
                 <th>Новость</th>
             </tr>
             <tr v-for = "(post, i) in news">
@@ -54,12 +58,12 @@
                     {{date_tranform(post.news_date)}}
                 </td>
                 <td>{{post.site_id}}</td>
+                <td>{{post.lang}}</td>
                 <td>
                     <a :href="post.link" target="_blank">
                         {{post.title}}
                     </a>
                 </td>
-
             </tr>
         </table>
 

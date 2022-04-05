@@ -12,6 +12,7 @@ let app = new Vue({
             'site':[],
             'activeTags': [],
             'counters': [],
+            'langs':[],
 
         }
     },
@@ -23,6 +24,7 @@ let app = new Vue({
                 this.news = data.data
                 this.tags = data.tags
                 this.sites = data.sites
+                this.langs = data.langs
 
                 this.origin_news = this.news
                 this.origin_sites = this.sites
