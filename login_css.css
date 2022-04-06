@@ -1,0 +1,23 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form.login input{
+    font-size: 22px;
+    display: block;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+form.login input.btn{
+    width: 100%;
+    margin-top: 5px;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #008f86;
+    border: 1px solid #008f86;
+    padding: 7px;
+    border-radius: 5px;
+}

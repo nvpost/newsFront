@@ -5,21 +5,42 @@ html{
     color: rgba(0,0,0,0.87);
 }
 
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .conatiner{
     width: 1200px;
     margin: 0 auto;
+}
+.select_lang span{
+    margin-left: 2px;
+}
+.select_lang span::after{
+    content: '/';
+    margin-left: 2px;
+    color: #718096 !important;
+}
+.select_lang span:nth-last-child(1)::after{
+    content: ''
 }
 .table{
     color: #718096;
     text-decoration: none;
     font-size: 0.9em;
 }
-.table a{
+.table a,
+.table_tag,
+.select_lang span{
     color: #718096;
     text-decoration: none;
     transition: 0.3s;
+    cursor: pointer;
 }
-.table a:hover{
+.table a:hover,
+.table_tag:hover,
+.select_lang span:hover{
     color: #333436;
 }
 
@@ -84,12 +105,21 @@ html{
 .active{
     background-color: #008f86;
     color: #fff;
-
-
+}
+span.active_text{
+    color: #333436;
 }
 .close{
     border: 1px solid gray;
     border-radius: 10px;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+.select_lang .close {
+    font-size: 0.6em;
+    padding: 2px 5px;
+}
+.table_lang{
+    cursor:pointer;
 }

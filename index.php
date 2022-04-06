@@ -1,3 +1,18 @@
+
+<?php
+require 'conf.php';
+if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
+
+
+
+}else{
+    echo "<link rel='stylesheet' href='login_css.css'>";
+    echo "<form method='post' class='login'><input name='own_log' type='text'><input class='btn' type='submit' value='Войти'></form>";
+    die();
+}
+?>
+
+
 <!DOCTYPE html>
 
 <head>
@@ -13,9 +28,18 @@
 <div class="conatiner">
     <div id="app">
         <div class="info">
-            <div class="news_counter">
-                Всего новостей: {{news.length}} из {{origin_news.length}}
+            <div class="header">
+                <div class="news_counter">
+                    Всего новостей: {{news.length}} из {{origin_news.length}}
+                </div>
+
+                <div class="select_lang">
+                    <span v-for="(lang, index) in langs" @click="addLang(lang)"
+                          :class="lang==activeLang?'active_text':''">{{lang}}</span>
+                    <span class="close" v-if="activeLang" @click="addLang('off')">X</span>
+                </div>
             </div>
+
             <div class="actions">
                 <div class="tags" v-if="site.length==0">
                     <div
@@ -23,19 +47,17 @@
                             class="tag"
                             :class="activeTags.indexOf(tag)!=-1?'active':false"
                             @click="addTag(tag)"
-                            >{{tag}} {{counters[tag]}}
+                    >{{tag}} {{counters[tag]}}
                     </div>
                 </div>
                 <div class="site_info" v-else>
                     Новости компании: <a :href="site.name" target="_blank">{{site.name}}</a>
                     <span class="close" @click="closeSite()"> X </span>
                 </div>
-                <div class="langs">
 
-                </div>
                 <div class="sites">
                     <select name="sites"
-                    @change="setSite($event)"
+                            @change="setSite($event)"
                     >
                         <option>Сайт</option>
                         <option v-for="(s, index) in sites"
@@ -53,12 +75,29 @@
                 <th>Новость</th>
             </tr>
             <tr v-for = "(post, i) in news">
-                <td>{{post.group_id}}</td>
+                <td>
+                    <span
+                            v-for="tag in post.group_id.split(',')"
+                            class="table_tag"
+                            @click = "addTag(tag, true)"
+                    >
+                       {{tag}}
+                    </span>
+                </td>
                 <td class="date">
                     {{date_tranform(post.news_date)}}
                 </td>
-                <td>{{post.site_id}}</td>
-                <td>{{post.lang}}</td>
+                <td>
+                    <span
+                            @click="setSite($event, post.site_id)"
+                            class="table_tag"
+                    >
+                        {{post.site_id}}
+                    </span>
+                </td>
+                <td><span @click="addLang(post.lang)"
+                          class="table_lang"
+                    >{{post.lang}}</span></td>
                 <td>
                     <a :href="post.link" target="_blank">
                         {{post.title}}
@@ -73,6 +112,3 @@
 
 <script src="js/js.js"></script>
 
-
-
-</html>

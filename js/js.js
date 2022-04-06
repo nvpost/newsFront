@@ -13,6 +13,7 @@ let app = new Vue({
             'activeTags': [],
             'counters': [],
             'langs':[],
+            'activeLang':""
 
         }
     },
@@ -24,13 +25,13 @@ let app = new Vue({
                 this.news = data.data
                 this.tags = data.tags
                 this.sites = data.sites
-                this.langs = data.langs
 
                 this.origin_news = this.news
                 this.origin_sites = this.sites
 
                 this.setCouters()
                 this.siteCounter()
+                this.langs = [...new Set(this.sites.map(i=>{return i.lang}))]
 
             })
     },
@@ -69,18 +70,32 @@ let app = new Vue({
             })
             // console.log(app.siteNewsCounter)
         },
-        addTag(t){
+        addTag(t, remove=true){
             if(this.activeTags.indexOf(t)!=-1){
-                this.activeTags.splice(this.activeTags.indexOf(t),1)
+                if(remove){
+                    this.activeTags.splice(this.activeTags.indexOf(t),1)
+                }
             }else{
                 this.activeTags.push(t)
-
             }
             this.newSet()
         },
-        setSite(e){
+        addLang(l){
+            if(this.activeLang == l || l=='off'){
+                this.activeLang = ""
+                app.news = app.origin_news
+            }else{
+                this.activeLang=l
+                this.newSetLang()
+            }
+
+
+        },
+        setSite(e, val=false){
             this.news = this.origin_news
-            let val = e.target.value
+            if(!val){
+                val = e.target.value
+            }
             ns = this.news.filter(i=>{
                 return i.site_id == val
             })
@@ -104,6 +119,13 @@ let app = new Vue({
                    returnFlag = i.group_id.indexOf(j)!=-1
                })
                return returnFlag
+            })
+            this.news = ns
+        },
+        newSetLang(){
+            this.news = this.origin_news
+            ns = this.news.filter(i=>{
+                return i.lang == this.activeLang
             })
             this.news = ns
         },
