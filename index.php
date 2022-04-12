@@ -17,16 +17,25 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 
 <head>
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новости</title>
 
+    <script scr="assets/materialize/materialize.js"></script>
+    <link rel="assets/materialize/materialize.css"></link>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
+    <script src="assets/libs/vue.js"></script>
     <link rel="stylesheet" href="css.css">
 </head>
 <body>
 <div class="conatiner">
     <div id="app">
+        <div class="pleloader_hover" v-if="preloader">
+            <div class="preloader"></div>
+        </div>
+
+
+
         <div class="info">
             <div class="header">
                 <div class="news_counter">
@@ -69,9 +78,11 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
         <table class="table">
             <tr>
                 <th>Направление</th>
-                <th>Дата</th>
-                <th>Компания</th>
+
+
                 <th>Язык</th>
+                <th>Компания</th>
+                <th>Дата</th>
                 <th>Новость</th>
             </tr>
             <tr v-for = "(post, i) in news">
@@ -84,20 +95,19 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                        {{tag}}
                     </span>
                 </td>
-                <td class="date">
-                    {{date_tranform(post.news_date)}}
-                </td>
-                <td>
-                    <span
-                            @click="setSite($event, post.site_id)"
-                            class="table_tag"
-                    >
-                        {{post.site_id}}
-                    </span>
-                </td>
+
+
                 <td><span @click="addLang(post.lang)"
                           class="table_lang"
                     >{{post.lang}}</span></td>
+                <td>
+                    <span
+                            @click="setSite($event, post.site_id)"
+                            class="table_tag">
+                        {{post.site_id}}
+                    </span>
+                </td>
+                <td class="date">{{date_tranform(post.news_date)}}</td>
                 <td>
                     <a :href="post.link" target="_blank">
                         {{post.title}}

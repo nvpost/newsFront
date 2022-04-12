@@ -13,13 +13,16 @@ let app = new Vue({
             'activeTags': [],
             'counters': [],
             'langs':[],
-            'activeLang':""
+            'activeLang':"",
+            'preloader': true,
 
         }
     },
     beforeCreate(){
-
-            fetch('server/getData.php')
+            fetch('server/getData.php',{
+                method: 'POST',
+                body:JSON.stringify({limit: 100})
+            })
             .then(res=>res.json())
             .then((data) => {
                 this.news = data.data
@@ -32,6 +35,8 @@ let app = new Vue({
                 this.setCouters()
                 this.siteCounter()
                 this.langs = [...new Set(this.sites.map(i=>{return i.lang}))]
+
+                this.preloader=false
 
             })
     },

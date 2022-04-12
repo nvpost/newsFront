@@ -11,8 +11,9 @@ html{
 }
 
 .conatiner{
-    width: 1200px;
+    width: 90%;
     margin: 0 auto;
+    max-width: 1200px;
 }
 .select_lang span{
     margin-left: 2px;
@@ -52,8 +53,9 @@ html{
 .table th {
     font-weight: bold;
     padding: 5px;
-    background: #efefef;
-    border: 1px solid #dddddd;
+    border: 1px solid #fff;
+    background-color: #008f86;
+    color: #fff;
 }
 .table td {
     border: 1px solid #dddddd;
@@ -71,6 +73,8 @@ html{
 
 .actions{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     padding: 5px 0;
     font-size: 1em;
 }
@@ -79,10 +83,7 @@ html{
     border-radius: 10px;
 
 }
-.sites{
-    flex:1;
-    text-align: right;
-}
+
 
 .tags{
     display: flex;
@@ -122,4 +123,82 @@ span.active_text{
 }
 .table_lang{
     cursor:pointer;
+}
+
+/*preloader*/
+.pleloader_hover {
+    z-index: 200;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.preloader {
+    display: block;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 30px auto;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #008f86;
+    animation: preloader-5-spin 2s linear infinite;
+}
+.preloader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #54686f;
+    animation: preloader-5-spin 3s linear infinite;
+}
+.preloader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #9f0412;
+    animation: preloader-5-spin 1.5s linear infinite;
+}
+.preloader_hide{
+
+}
+
+@keyframes preloader-5-spin {
+    0%   {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .conatiner{
+        width: auto;
+    }
+    .sites{
+        margin-top:10px;
+        width:100%
+    }
+    .sites select{
+        width:100%;
+    }
+    .tags{
+        width: 100%;
+        justify-content: space-between;
+    }
 }
