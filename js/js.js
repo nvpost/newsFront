@@ -23,23 +23,29 @@ let app = new Vue({
 
         }
     },
+
+    //Переписать теги на key=>value (название => число), взять из server/getNewsCount.php
     created(){
+        fetch('server/getNewsCount.php')
+            .then(res=>res.json())
+            .then(data=>{
+                this.newsCount = data.count
+                this.tagsCount = data.tagCount
+                console.log(data)
+            })
         this.getNews(this.limit)
     },
 
     methods:{
         getNews(l, offset=0){
             // let l = this.limit ? this.limit : 100;
-            fetch('server/getNewsCount.php')
-                .then(res=>res.json())
-                .then(data=>{
-                    this.newsCount = data.count;
-                    this.tagsCount = data.tagCount
-                    console.log(data)
-                })
             fetch('server/getData.php',{
                 method: 'POST',
-                body:JSON.stringify({limit: l, offset: offset})
+                body:JSON.stringify({
+                    limit: l,
+                    offset: offset,
+                    tags:this.activeTags.join(', ')
+                })
             })
                 .then(res=>res.json())
                 .then((data) => {
@@ -105,7 +111,8 @@ let app = new Vue({
             }else{
                 this.activeTags.push(t)
             }
-            this.newSet()
+            this.getNews(this.limit, 0)
+            // this.newSet()
         },
         excludeTag(e, t, remove=true){
             event.stopPropagation();
@@ -178,9 +185,9 @@ let app = new Vue({
         },
         setTagClass(tag){
             let cl=""
-            cl = this.activeTags.indexOf(tag)!=-1 ? 'active':false
-            cl = this.excludeTags.indexOf(tag)!=-1?'disabled':false
-
+            cl = this.activeTags.indexOf(tag)!=-1?'active':false
+            // cl = this.excludeTags.indexOf(tag)!=-1?'disabled':false
+            // console.log(tag, cl)
             return cl
         }
 
