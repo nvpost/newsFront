@@ -7,13 +7,14 @@ function deb($v){
 $frontData = json_decode(file_get_contents("php://input"));
 
 $limit = $frontData->limit ? " LIMIT ".$frontData->limit : "";
+$offset = $frontData->offset ? " OFFSET ".$frontData->offset : "";
 
 $db = new PDO('mysql:host=localhost;dbname=news_site',
     'root',
     ''
 );
 
-$all_data = $db->query('SELECT * from news ORDER BY news_date DESC'.$limit)
+$all_data = $db->query('SELECT * from news ORDER BY news_date DESC'.$limit.$offset)
     ->fetchAll();
 
 //получаем теги
@@ -32,5 +33,5 @@ echo json_encode([
     'tags'=>$tags,
     'sites'=>$sites,
     'langs' => $langs,
-    'frontData'=>$frontData->limit
+    'frontData'=>$frontData,
     ]);

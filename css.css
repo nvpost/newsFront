@@ -97,16 +97,35 @@ html{
     cursor: pointer;
     box-shadow: 1px 1px 3px #d9d9d9;
     transition: all 0.3s;
+    display: flex;
 
 }
 .tag:hover{
     box-shadow: inset 1px 1px 10px #d9d9d9;
 }
 
+
 .active{
     background-color: #008f86;
     color: #fff;
 }
+.disabled{
+    opacity: 0.5;
+}
+.tag_hidde{
+    /*display: none;*/
+    overflow: hidden;
+    width: 0px;
+    transition: all 0.3s;
+
+}
+.tag:hover .tag_hidde{
+    /*display: block;*/
+    transition: all 0.3s;
+    overflow: visible;
+    width: fit-content;
+}
+
 span.active_text{
     color: #333436;
 }
@@ -201,4 +220,23 @@ span.active_text{
         width: 100%;
         justify-content: space-between;
     }
+}
+.pagiantion_control{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+}
+.pagiantion_control p{
+    margin: 0px;
+}
+.pagination .page{
+    border: 1px solid;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+.pagination .page:hover{
+    box-shadow: inset 1px 1px 10px #d9d9d9;
 }

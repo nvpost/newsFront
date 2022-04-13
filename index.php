@@ -20,12 +20,14 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новости</title>
 
-    <script scr="assets/materialize/materialize.js"></script>
-    <link rel="assets/materialize/materialize.css"></link>
+<!--    <script src="assets/materialize/materialize.js"></script>-->
+<!--    <link rel="stylesheet" href="assets/materialize/materialize.css"></link>-->
 
 <!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="assets/libs/vue.js"></script>
     <link rel="stylesheet" href="css.css">
+
 </head>
 <body>
 <div class="conatiner">
@@ -39,7 +41,7 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
         <div class="info">
             <div class="header">
                 <div class="news_counter">
-                    Всего новостей: {{news.length}} из {{origin_news.length}}
+                    Всего новостей: {{news.length}} из {{newsCount}}
                 </div>
 
                 <div class="select_lang">
@@ -54,9 +56,10 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                     <div
                             v-for="(tag, index) in tags"
                             class="tag"
-                            :class="activeTags.indexOf(tag)!=-1?'active':false"
+                            :class="setTagClass(tag)"
                             @click="addTag(tag)"
-                    >{{tag}} {{counters[tag]}}
+                    >{{tag}} {{tagsCount[tag]}}
+
                     </div>
                 </div>
                 <div class="site_info" v-else>
@@ -65,7 +68,8 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 </div>
 
                 <div class="sites">
-                    <select name="sites"
+                    <select
+                            name="sites"
                             @change="setSite($event)"
                     >
                         <option>Сайт</option>
@@ -73,6 +77,27 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                                 :value="s.name">{{s.name}} ({{s.category}} / {{s.lang}}) - {{siteNewsCounter[s.name]}}</option>
                     </select>
                 </div>
+            </div>
+        </div>
+        <div class="pagiantion_control">
+            <div class="rows_lenght_field">
+                <p>
+                    Показывать по:
+                <select name="rows_lenght" v-model="limit" @change="getNews(limit)">
+                    <option value="100"">100</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="all">все</option>
+
+                </select>
+                </p>
+            </div>
+            <div class="pagination">
+                <span class="page"
+                      :class="key==activePage?'active':false"
+                      @click="getNewPage(key)"
+                      v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
             </div>
         </div>
         <table class="table">
