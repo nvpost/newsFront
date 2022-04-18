@@ -8,11 +8,13 @@ let app = new Vue({
             'origin_news': [],
             'news': [],
             'origin_sites':[],
-            'siteNewsCounter':[],
+            // 'siteNewsCounter':[],
             'sites': [],
-            'site':[],
+            'site': {
+                name:false,
+                data:false
+            },
             'activeTags': [],
-            'excludeTags': [],
             'counters': [],
             'langs':[],
             'activeLang':"",
@@ -29,9 +31,9 @@ let app = new Vue({
         fetch('server/getNewsCount.php')
             .then(res=>res.json())
             .then(data=>{
-                this.newsCount = data.count
-                this.tagsCount = data.tagCount
-                console.log(data)
+                // this.newsCount = data.count
+                this.tags = data.tagCount
+                this.sites = data.siteAndCountArray
             })
         this.getNews(this.limit)
     },
@@ -39,28 +41,25 @@ let app = new Vue({
     methods:{
         getNews(l, offset=0){
             // let l = this.limit ? this.limit : 100;
+            activeTagsForSQL = this.activeTags.map(i=>{return "'%"+i+"%'"})
             fetch('server/getData.php',{
                 method: 'POST',
                 body:JSON.stringify({
                     limit: l,
                     offset: offset,
-                    tags:this.activeTags.join(', ')
+                    tags:activeTagsForSQL,
+                    site: this.site.name
                 })
             })
                 .then(res=>res.json())
                 .then((data) => {
                     this.news = data.data
-                    this.tags = data.tags
-                    this.sites = data.sites
-
-                    this.origin_news = this.news
-                    this.origin_sites = this.sites
-
-                    // this.setCouters()
-                    this.siteCounter()
-                    this.langs = [...new Set(this.sites.map(i=>{return i.lang}))]
 
                     this.preloader=false
+                    this.newsCount = data.newsInSet
+                    if(this.site.name){
+                        this.site.data = data.site[0]
+                    }
                     console.log(data)
 
                 })
@@ -74,35 +73,7 @@ let app = new Vue({
             d = new Date(date)
             return d.toLocaleDateString()
         },
-        // setCouters(){
-        //     this.news.forEach(i=>{
-        //         app.tags.forEach(j=>{
-        //             if(i.group_id.indexOf(j)!=-1){
-        //                 if(!app.counters[j]){
-        //                     app.counters[j]=1
-        //                 }else{
-        //                     app.counters[j]++
-        //                 }
-        //             }
-        //         })
-        //     })
-        // },
-        siteCounter(site){
-            this.news.forEach(i=>{
-                this.sites.forEach(j=>{
-                    n = j.name
-                    if(i.site_id==n) {
-                        if (!app.siteNewsCounter[n]) {
-                            app.siteNewsCounter[n] = 1
-                        } else {
-                            app.siteNewsCounter[n]++
-                        }
-                    }
-                })
 
-            })
-            // console.log(app.siteNewsCounter)
-        },
         addTag(t, remove=true){
             if(this.activeTags.indexOf(t)!=-1){
                 if(remove){
@@ -114,16 +85,16 @@ let app = new Vue({
             this.getNews(this.limit, 0)
             // this.newSet()
         },
-        excludeTag(e, t, remove=true){
-            event.stopPropagation();
-            if(this.excludeTags.indexOf(t)!=-1){
-                if(remove){
-                    this.excludeTags.splice(this.excludeTags.indexOf(t),1)
-                }
-            }else{
-                this.excludeTags.push(t)
-            }
-        },
+        // excludeTag(e, t, remove=true){
+        //     event.stopPropagation();
+        //     if(this.excludeTags.indexOf(t)!=-1){
+        //         if(remove){
+        //             this.excludeTags.splice(this.excludeTags.indexOf(t),1)
+        //         }
+        //     }else{
+        //         this.excludeTags.push(t)
+        //     }
+        // },
         addLang(l){
             if(this.activeLang == l || l=='off'){
                 this.activeLang = ""
@@ -136,42 +107,12 @@ let app = new Vue({
 
         },
         setSite(e, val=false){
-            this.news = this.origin_news
-            if(!val){
-                val = e.target.value
-            }
-            ns = this.news.filter(i=>{
-                return i.site_id == val
-            })
-            this.news = ns
-
-            this.sites = this.origin_sites
-             s = this.sites.filter(i=>{
-                return i.name == val
-            })
-            this.site = s[0]
+            this.activeTags = []
+            this.site.name = e.target.value
+            this.getNews(this.limit, 0)
         },
 
-        checkTagClass(t){
-            return this.activeTags.indexOf(t)!=-1
-        },
-        newSet(){
-            this.news = this.origin_news
-            ns = this.news.filter(i=>{
-               returnFlag = false;
-               app.activeTags.forEach(j=>{
-                   // Если хоть один элемент из массива активных датчиков совпадает
-                   if(i.group_id.indexOf(j)!=-1){
-                       returnFlag=true
-                   }
-               })
-                if(app.activeTags.length==0){
-                    returnFlag = true;
-                }
-                return returnFlag
-            })
-            this.news = ns
-        },
+
         newSetLang(){
             this.news = this.origin_news
             ns = this.news.filter(i=>{
@@ -184,10 +125,7 @@ let app = new Vue({
             this.news = this.origin_news
         },
         setTagClass(tag){
-            let cl=""
             cl = this.activeTags.indexOf(tag)!=-1?'active':false
-            // cl = this.excludeTags.indexOf(tag)!=-1?'disabled':false
-            // console.log(tag, cl)
             return cl
         }
 
@@ -195,7 +133,5 @@ let app = new Vue({
     }
 })
 
-//timeout для materialize
-// setTimeout('M.AutoInit()', 750)
 
 

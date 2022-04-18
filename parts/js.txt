@@ -1,0 +1,54 @@
+                    // this.tags = data.tags
+                    // this.sites = data.sites
+
+                    // this.setCouters()
+                    // this.siteCounter()
+                    // this.langs = [...new Set(this.sites.map(i=>{return i.lang}))]
+
+        // setCouters(){
+        //     this.news.forEach(i=>{
+        //         app.tags.forEach(j=>{
+        //             if(i.group_id.indexOf(j)!=-1){
+        //                 if(!app.counters[j]){
+        //                     app.counters[j]=1
+        //                 }else{
+        //                     app.counters[j]++
+        //                 }
+        //             }
+        //         })
+        //     })
+        // },
+        // siteCounter(site){
+        //     this.news.forEach(i=>{
+        //         this.sites.forEach(j=>{
+        //             n = j.name
+        //             if(i.site_id==n) {
+        //                 if (!app.siteNewsCounter[n]) {
+        //                     app.siteNewsCounter[n] = 1
+        //                 } else {
+        //                     app.siteNewsCounter[n]++
+        //                 }
+        //             }
+        //         })
+        //
+        //     })
+        //     // console.log(app.siteNewsCounter)
+        // },
+
+                // newSet(){
+                //     this.news = this.origin_news
+                //     ns = this.news.filter(i=>{
+                //        returnFlag = false;
+                //        app.activeTags.forEach(j=>{
+                //            // Если хоть один элемент из массива активных датчиков совпадает
+                //            if(i.group_id.indexOf(j)!=-1){
+                //                returnFlag=true
+                //            }
+                //        })
+                //         if(app.activeTags.length==0){
+                //             returnFlag = true;
+                //         }
+                //         return returnFlag
+                //     })
+                //     this.news = ns
+                // },

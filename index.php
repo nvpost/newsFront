@@ -52,18 +52,20 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
             </div>
 
             <div class="actions">
-                <div class="tags" v-if="site.length==0">
+                <div class="tags" v-if="!site.name">
                     <div
-                            v-for="(tag, index) in tags"
+                            v-for="(count, key) in tags"
                             class="tag"
-                            :class="setTagClass(tag)"
-                            @click="addTag(tag)"
-                    >{{tag}} {{tagsCount[tag]}}
+                            :class="setTagClass(key)"
+                            @click="addTag(key)"
+                    >{{key}} {{count}}
 
                     </div>
                 </div>
                 <div class="site_info" v-else>
-                    Новости компании: <a :href="site.name" target="_blank">{{site.name}}</a>
+                    Новости компании: <a :href="site.data.link" target="_blank">{{site.name}}</a>,
+                    группа: {{site.data.category}},
+                    язык: {{site.data.lang}}
                     <span class="close" @click="closeSite()"> X </span>
                 </div>
 
@@ -73,8 +75,8 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                             @change="setSite($event)"
                     >
                         <option>Сайт</option>
-                        <option v-for="(s, index) in sites"
-                                :value="s.name">{{s.name}} ({{s.category}} / {{s.lang}}) - {{siteNewsCounter[s.name]}}</option>
+                        <option v-for="(count, key) in sites"
+                                :value="key">{{key}} ({{count.lang}} / {{count.tags}}) - {{count.count}}</option>
                     </select>
                 </div>
             </div>
