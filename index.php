@@ -24,8 +24,13 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 <!--    <link rel="stylesheet" href="assets/materialize/materialize.css"></link>-->
 
 <!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="assets/libs/vue.js"></script>
+
+    <script src="assets/libs/datapicker/datepicker.js"></script>
+    <script src="assets/libs/datapicker/ru.js"></script>
+
     <link rel="stylesheet" href="css.css">
 
 </head>
@@ -95,6 +100,29 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 </select>
                 </p>
             </div>
+            <div class="dateSelect">
+                <div class="news_date">
+                <p>Дата новости:</p>
+                    <div class="datepickers">
+<!--                        v-model срабатывает на второй клик-->
+                        <vuejs-datepicker :language="ru"
+                                          v-model="startDate"
+                                          :clear-button="true"
+                                          placeholder="Старт"
+                                          calendar-class="calendar_class"
+                                          @selected="setDates()"
+
+                        ></vuejs-datepicker>
+                        <vuejs-datepicker :language="ru"
+                                          v-model="stopDate"
+                                          :clear-button="true"
+                                          placeholder="Стоп"
+                                          @selected="setDates()"
+                        ></vuejs-datepicker>
+                    </div>
+                </div>
+
+            </div>
             <div class="pagination">
                 <span class="page"
                       :class="key==activePage?'active':false"
@@ -110,6 +138,7 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 <th>Язык</th>
                 <th>Компания</th>
                 <th>Дата</th>
+                <th>Дата парсинга</th>
                 <th>Новость</th>
             </tr>
             <tr v-for = "(post, i) in news">
@@ -135,6 +164,7 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                     </span>
                 </td>
                 <td class="date">{{date_tranform(post.news_date)}}</td>
+                <td class="date">{{date_tranform(post.parse_date)}}</td>
                 <td>
                     <a :href="post.link" target="_blank">
                         {{post.title}}
@@ -148,4 +178,12 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 </body>
 
 <script src="js/js.js"></script>
+
+<script>
+
+
+
+</script>
+
+
 

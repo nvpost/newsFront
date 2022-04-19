@@ -21,9 +21,15 @@ let app = new Vue({
             'preloader': true,
             'limit': 200,
             'newsCount':0,
-            'activePage':0
+            'activePage':0,
+            ru:vdp_translation_ru.js,
+            startDate:'',
+            stopDate: new Date()
 
         }
+    },
+    components: {
+        vuejsDatepicker
     },
 
     //Переписать теги на key=>value (название => число), взять из server/getNewsCount.php
@@ -36,9 +42,20 @@ let app = new Vue({
                 this.sites = data.siteAndCountArray
             })
         this.getNews(this.limit)
+
+
+
     },
 
     methods:{
+        setDates(){
+          if(this.startDate.toLocaleString().length>10 && this.stopDate.toLocaleString().length>10){
+              console.log("Отправляем")
+
+          }
+            console.log(this.startDate.toLocaleString())
+            console.log(this.stopDate.toLocaleString())
+        },
         getNews(l, offset=0){
             // let l = this.limit ? this.limit : 100;
             activeTagsForSQL = this.activeTags.map(i=>{return "'%"+i+"%'"})
@@ -127,8 +144,10 @@ let app = new Vue({
         setTagClass(tag){
             cl = this.activeTags.indexOf(tag)!=-1?'active':false
             return cl
+        },
+        getNewsSetDate(e){
+            console.log(e)
         }
-
 
     }
 })

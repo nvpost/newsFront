@@ -32,7 +32,7 @@ if($frontData->site){
 
 
 
-$all_data = $db->query("SELECT * from news ".$where_like." ORDER BY news_date DESC".$limit.$offset)
+$all_data = $db->query("SELECT * from news ".$where_like." ORDER BY parse_date DESC, news_date DESC".$limit.$offset)
     ->fetchAll();
 $newsInSet = $db->query("SELECT COUNT(*) from news ".$where_like." ORDER BY news_date DESC")
     ->fetchColumn();

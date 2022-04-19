@@ -240,3 +240,31 @@ span.active_text{
 .pagination .page:hover{
     box-shadow: inset 1px 1px 10px #d9d9d9;
 }
+.datepickers{
+    display: flex;
+}
+
+
+.datepickers .vdp-datepicker{
+    width: 110px;
+}
+.datepickers .vdp-datepicker input{
+    width: 90px;
+}
+.vdp-datepicker__calendar header span{
+    color:#fff;
+    background-color: #9f0412;
+}
+.vdp-datepicker__calendar header span:hover{
+    background-color: #008f86 !important;
+}
+.vdp-datepicker__calendar header span.prev::after{
+    border-right: 10px solid #fff;
+}
+.vdp-datepicker__calendar header span.next::after{
+    border-left: 10px solid #fff;
+}
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover{
+    border: 1px solid #008f86 !important;
+}
+
