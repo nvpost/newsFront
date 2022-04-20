@@ -22,9 +22,29 @@ let app = new Vue({
             'limit': 200,
             'newsCount':0,
             'activePage':0,
-            ru:vdp_translation_ru.js,
-            startDate:'',
-            stopDate: new Date()
+            'news_date_selector':true,
+            ru: vdp_translation_ru.js,
+            'newsDate':{
+                start: null,
+                stop: new Date()
+            },
+            'parseDate':{
+                start: null,
+                stop: null
+            },
+            'date_field': 'news_date',
+            // originDates:
+            'originDates':{
+                'newsDate':{
+                    start: null,
+                    stop: new Date()
+                },
+                'parseDate':{
+                    start: null,
+                    stop: null
+                },
+            }
+
 
         }
     },
@@ -40,32 +60,38 @@ let app = new Vue({
                 // this.newsCount = data.count
                 this.tags = data.tagCount
                 this.sites = data.siteAndCountArray
+
+                this.parseDate.start = data.parse_min_max.min
+                this.parseDate.stop = data.parse_min_max.max
+
+                this.originDates.parseDate.start = data.parse_min_max.min
+                this.originDates.parseDate.stop = data.parse_min_max.max
+
+                console.log(data)
+
+                this.getNews(this.limit)
             })
-        this.getNews(this.limit)
-
-
 
     },
 
     methods:{
-        setDates(){
-          if(this.startDate.toLocaleString().length>10 && this.stopDate.toLocaleString().length>10){
-              console.log("Отправляем")
 
-          }
-            console.log(this.startDate.toLocaleString())
-            console.log(this.stopDate.toLocaleString())
-        },
-        getNews(l, offset=0){
+        getNews(l=this.limit, offset=0){
             // let l = this.limit ? this.limit : 100;
             activeTagsForSQL = this.activeTags.map(i=>{return "'%"+i+"%'"})
+            dates = {
+                field: this.date_field,
+                news_dates: this.newsDate,
+                parse_dates: this.parseDate
+            }
             fetch('server/getData.php',{
                 method: 'POST',
                 body:JSON.stringify({
                     limit: l,
                     offset: offset,
                     tags:activeTagsForSQL,
-                    site: this.site.name
+                    site: this.site.name,
+                    dates: dates
                 })
             })
                 .then(res=>res.json())
@@ -80,6 +106,10 @@ let app = new Vue({
                     console.log(data)
 
                 })
+        },
+        setDates(){
+            this.getNews()
+
         },
         getNewPage(key){
             let offset = key*this.limit
@@ -102,16 +132,7 @@ let app = new Vue({
             this.getNews(this.limit, 0)
             // this.newSet()
         },
-        // excludeTag(e, t, remove=true){
-        //     event.stopPropagation();
-        //     if(this.excludeTags.indexOf(t)!=-1){
-        //         if(remove){
-        //             this.excludeTags.splice(this.excludeTags.indexOf(t),1)
-        //         }
-        //     }else{
-        //         this.excludeTags.push(t)
-        //     }
-        // },
+
         addLang(l){
             if(this.activeLang == l || l=='off'){
                 this.activeLang = ""
@@ -145,8 +166,17 @@ let app = new Vue({
             cl = this.activeTags.indexOf(tag)!=-1?'active':false
             return cl
         },
-        getNewsSetDate(e){
-            console.log(e)
+        newsDateSelector(e){
+            v = e.target.value
+            document.querySelectorAll('.datepickers').forEach((i)=>{
+                i.style.display = 'none'
+            })
+            document.querySelector('#'+v).style.display = 'flex';
+            this.date_field = v
+
+            this.newsDate = this.originDates.newsDate
+            this.parseDate = this.originDates.parseDate
+
         }
 
     }

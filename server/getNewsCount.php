@@ -39,9 +39,18 @@ foreach ($sites as $s){
 }
 ksort($siteAndCountArray);
 
+//Минимальная дата новости
+$start_date = $db->query("SELECT MIN(news_date) as min FROM news WHERE news_date > '0000-00-00'")
+    ->fetchColumn();
+
+$parse_min_max = $db->query("SELECT MIN(parse_date) as min, MAX(parse_date) as max FROM news WHERE news_date > '0000-00-00'")
+    ->fetch(PDO::FETCH_ASSOC);
+
 
 echo json_encode([
     'count'=>$news_count,
     'tagCount'=>$tagsArrayCount,
-    'siteAndCountArray'=>$siteAndCountArray
+    'siteAndCountArray'=>$siteAndCountArray,
+    'startDate' => $start_date,
+    'parse_min_max' => $parse_min_max
 ]);

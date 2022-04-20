@@ -227,6 +227,13 @@ span.active_text{
     align-items: center;
     padding: 10px 0px;
 }
+.pagiantion_control>div
+{
+    flex:1;
+}
+.pagination{
+    text-align: right;
+}
 .pagiantion_control p{
     margin: 0px;
 }
@@ -248,8 +255,13 @@ span.active_text{
 .datepickers .vdp-datepicker{
     width: 110px;
 }
+
 .datepickers .vdp-datepicker input{
     width: 90px;
+}
+.vdp-datepicker__calendar{
+    box-shadow: 1px 1px 10px #747474;
+    transition: 0.3s;
 }
 .vdp-datepicker__calendar header span{
     color:#fff;
@@ -268,3 +280,15 @@ span.active_text{
     border: 1px solid #008f86 !important;
 }
 
+/*//date select*/
+
+.date_select_wrapper{
+    display: flex;
+    align-items: center;
+}
+.date_selector{
+    margin-right: 20px;
+}
+.date_selector select{
+    padding: 2px;
+}

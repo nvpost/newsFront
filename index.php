@@ -100,27 +100,47 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 </select>
                 </p>
             </div>
-            <div class="dateSelect">
-                <div class="news_date">
-                <p>Дата новости:</p>
-                    <div class="datepickers">
-<!--                        v-model срабатывает на второй клик-->
+            <div class="date_select_wrapper">
+                <div class="date_selector">
+                    <select name="date_type" id="date_type" @change="newsDateSelector($event)">
+                        <option value="news_date">Дата новости</option>
+                        <option value="parse_date">Дата парсинга</option>
+                    </select>
+                </div>
+                    <div class="datepickers" id="news_date">
                         <vuejs-datepicker :language="ru"
-                                          v-model="startDate"
+                                          v-model="newsDate.start"
                                           :clear-button="true"
                                           placeholder="Старт"
                                           calendar-class="calendar_class"
-                                          @selected="setDates()"
+                                          @input="setDates()"
+                        ></vuejs-datepicker>
+                        <vuejs-datepicker :language="ru"
+                                          v-model="newsDate.stop"
+                                          :clear-button="true"
+                                          placeholder="Стоп"
+                                          @input="setDates()"
+                        ></vuejs-datepicker>
+                    </div>
+
+
+                    <div class="datepickers" id="parse_date" style="display:none">
+                        <vuejs-datepicker :language="ru"
+                                          v-model="parseDate.start"
+                                          :clear-button="true"
+                                          placeholder="Старт"
+                                          calendar-class="calendar_class"
+                                          @input="setDates()"
 
                         ></vuejs-datepicker>
                         <vuejs-datepicker :language="ru"
-                                          v-model="stopDate"
+                                          v-model="parseDate.stop"
                                           :clear-button="true"
                                           placeholder="Стоп"
-                                          @selected="setDates()"
+                                          @input="setDates()"
                         ></vuejs-datepicker>
                     </div>
-                </div>
+
 
             </div>
             <div class="pagination">
@@ -172,6 +192,12 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 </td>
             </tr>
         </table>
+        <div class="pagination">
+                <span class="page"
+                      :class="key==activePage?'active':false"
+                      @click="getNewPage(key)"
+                      v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
+        </div>
 
     </div>
 </div>
