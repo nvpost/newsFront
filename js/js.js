@@ -4,6 +4,7 @@ let app = new Vue({
     data() {
         return {
             'tags': [],
+            'news11':[1,2,3],
             'tagsCount':[],
             'origin_news': [],
             'news': [],
@@ -30,7 +31,7 @@ let app = new Vue({
             },
             'parseDate':{
                 start: null,
-                stop: null
+                stop: new Date()
             },
             'date_field': 'news_date',
             // originDates:
@@ -41,15 +42,18 @@ let app = new Vue({
                 },
                 'parseDate':{
                     start: null,
-                    stop: null
+                    stop: new Date()
                 },
-            }
+            },
+            viewMode: "table"
 
 
         }
     },
     components: {
-        vuejsDatepicker
+        vuejsDatepicker,
+        gridview: httpVueLoader('tpls/gridView.vue'),
+        tableview: httpVueLoader('tpls/tableview.vue')
     },
 
     //Переписать теги на key=>value (название => число), взять из server/getNewsCount.php
@@ -65,9 +69,9 @@ let app = new Vue({
                 this.parseDate.stop = data.parse_min_max.max
 
                 this.originDates.parseDate.start = data.parse_min_max.min
-                this.originDates.parseDate.stop = data.parse_min_max.max
+                // this.originDates.parseDate.stop = data.parse_min_max.max
 
-                console.log(data)
+                // console.log(data)
 
                 this.getNews(this.limit)
             })
@@ -91,7 +95,8 @@ let app = new Vue({
                     offset: offset,
                     tags:activeTagsForSQL,
                     site: this.site.name,
-                    dates: dates
+                    dates: dates,
+                    // field: this.date_field
                 })
             })
                 .then(res=>res.json())
@@ -117,8 +122,11 @@ let app = new Vue({
             this.activePage = key;
         },
         date_tranform(date){
-            d = new Date(date)
-            return d.toLocaleDateString()
+            d = new Date(date).toLocaleDateString()
+            if (d=='Invalid Date'){
+                d="Н/д"
+            }
+            return d
         },
 
         addTag(t, remove=true){
@@ -159,8 +167,8 @@ let app = new Vue({
             this.news = ns
         },
         closeSite(){
-            this.site = [];
-            this.news = this.origin_news
+            this.site.name=false
+            this.getNews();
         },
         setTagClass(tag){
             cl = this.activeTags.indexOf(tag)!=-1?'active':false

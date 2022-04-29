@@ -1,16 +1,7 @@
 <?php
-date_default_timezone_set('UTC');
+require_once '../conf.php';
 
-function deb($v){
-    echo "<pre>";
-    print_r($v);
-    echo "</pre>";
-}
-
-$db = new PDO('mysql:host=localhost;dbname=news_site',
-    'root',
-    ''
-);
+//Передалть fetch
 
 
 $frontData = json_decode(file_get_contents("php://input"));
@@ -34,13 +25,29 @@ if($frontData->site){
 
 $date_field = $frontData->dates->field;
 $prefix_for_invalid_date = "";
+$f = false;
 if($date_field == 'news_date'){
-    $start = $frontData->dates->news_dates->start;
-    $stop = $frontData->dates->news_dates->stop;
-    $prefix_for_invalid_date = " AND news_date!='Invalid Date'";
-} else{
-    $start = $frontData->dates->parse_dates->start;
-    $stop = $frontData->dates->parse_dates->stop;
+    $f = 'news_date';
+    //Округлить старт день до 00 стоп до 23:59
+    $start=null;
+    if($frontData->dates->news_dates->start!==null){
+        $prefix_for_invalid_date = " AND news_date!='Invalid Date'";
+        $start = new DateTime($frontData->dates->news_dates->start);
+        $start = $start->format('Y-m-d');
+    }
+    $stop_full = new DateTime($frontData->dates->news_dates->stop);
+    $stop_full->modify('+1 day');
+    $stop = $stop_full->format('Y-m-d');
+
+
+} else {
+    $f = 'parse_date';
+    $start = new DateTime($frontData->dates->parse_dates->start);
+    $start = $start->format('Y-m-d');
+
+    $stop_full = new DateTime($frontData->dates->parse_dates->stop);
+    $stop_full->modify('+1 day');
+    $stop = $stop_full->format('Y-m-d');
 }
 
 
@@ -59,12 +66,16 @@ $all_data = $db->query("SELECT * from news ".$where_like." ORDER BY parse_date D
 $newsInSet = $db->query("SELECT COUNT(*) from news ".$where_like." ORDER BY news_date DESC")
     ->fetchColumn();
 
-
+//deb($all_data);
 
 echo json_encode([
     'data' => $all_data,
     'frontData' => $frontData,
     'newsInSet'=> $newsInSet,
     'site' => $site,
+    'start'=> $start,
+    'stop'=> $stop,
+//    'date_field'=>$date_field,
+//'f'=>$f
 //    'news_dates' => $frontData->dates->news_dates,
     ]);

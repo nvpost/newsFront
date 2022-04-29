@@ -292,3 +292,12 @@ span.active_text{
 .date_selector select{
     padding: 2px;
 }
+
+.select_view span{
+    cursor: pointer;
+}
+.select_view span.active_view{
+    color: #008f86;
+    font-weight: 500;
+    cursor: auto;
+}

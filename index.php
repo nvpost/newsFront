@@ -26,8 +26,10 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 <!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <script src="assets/libs/vue.js"></script>
 
+    <script src="assets/libs/http-vue-loader.js"></script>
     <script src="assets/libs/datapicker/datepicker.js"></script>
     <script src="assets/libs/datapicker/ru.js"></script>
 
@@ -48,12 +50,17 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 <div class="news_counter">
                     Всего новостей: {{news.length}} из {{newsCount}}
                 </div>
-
-                <div class="select_lang">
-                    <span v-for="(lang, index) in langs" @click="addLang(lang)"
-                          :class="lang==activeLang?'active_text':''">{{lang}}</span>
-                    <span class="close" v-if="activeLang" @click="addLang('off')">X</span>
+                <div class="select_view">Вид:
+                    <span :class="viewMode=='table'?'active_view':''" @click="viewMode='table'">таблица</span>
+                    /
+                    <span :class="viewMode=='grid'?'active_view':''" @click="viewMode='grid'">плитка с картинками</span>
                 </div>
+
+<!--                <div class="select_lang">-->
+<!--                    <span v-for="(lang, index) in langs" @click="addLang(lang)"-->
+<!--                          :class="lang==activeLang?'active_text':''">{{lang}}</span>-->
+<!--                    <span class="close" v-if="activeLang" @click="addLang('off')">X</span>-->
+<!--                </div>-->
             </div>
 
             <div class="actions">
@@ -150,48 +157,50 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                       v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
             </div>
         </div>
-        <table class="table">
-            <tr>
-                <th>Направление</th>
-
-
-                <th>Язык</th>
-                <th>Компания</th>
-                <th>Дата</th>
-                <th>Дата парсинга</th>
-                <th>Новость</th>
-            </tr>
-            <tr v-for = "(post, i) in news">
-                <td>
-                    <span
-                            v-for="tag in post.group_id.split(',')"
-                            class="table_tag"
-                            @click = "addTag(tag, true)"
-                    >
-                       {{tag}}
-                    </span>
-                </td>
-
-
-                <td><span @click="addLang(post.lang)"
-                          class="table_lang"
-                    >{{post.lang}}</span></td>
-                <td>
-                    <span
-                            @click="setSite($event, post.site_id)"
-                            class="table_tag">
-                        {{post.site_id}}
-                    </span>
-                </td>
-                <td class="date">{{date_tranform(post.news_date)}}</td>
-                <td class="date">{{date_tranform(post.parse_date)}}</td>
-                <td>
-                    <a :href="post.link" target="_blank">
-                        {{post.title}}
-                    </a>
-                </td>
-            </tr>
-        </table>
+        <gridview :news="news" v-if="viewMode=='grid'"></gridview>
+        <tableview :news="news" v-if="viewMode=='table'"></tableview>
+<!--        <table class="table">-->
+<!--            <tr>-->
+<!--                <th>Направление</th>-->
+<!---->
+<!---->
+<!--                <th>Язык</th>-->
+<!--                <th>Компания</th>-->
+<!--                <th>Дата</th>-->
+<!--                <th>Дата парсинга</th>-->
+<!--                <th>Новость</th>-->
+<!--            </tr>-->
+<!--            <tr v-for = "(post, i) in news">-->
+<!--                <td>-->
+<!--                    <span-->
+<!--                            v-for="tag in post.group_id.split(',')"-->
+<!--                            class="table_tag"-->
+<!--                            @click = "addTag(tag, true)"-->
+<!--                    >-->
+<!--                       {{tag}}-->
+<!--                    </span>-->
+<!--                </td>-->
+<!---->
+<!---->
+<!--                <td><span @click="addLang(post.lang)"-->
+<!--                          class="table_lang"-->
+<!--                    >{{post.lang}}</span></td>-->
+<!--                <td>-->
+<!--                    <span-->
+<!--                            @click="setSite($event, post.site_id)"-->
+<!--                            class="table_tag">-->
+<!--                        {{post.site_id}}-->
+<!--                    </span>-->
+<!--                </td>-->
+<!--                <td class="date">{{date_tranform(post.news_date)}}</td>-->
+<!--                <td class="date">{{date_tranform(post.parse_date)}}</td>-->
+<!--                <td>-->
+<!--                    <a :href="post.link" target="_blank">-->
+<!--                        {{post.title}}-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
         <div class="pagination">
                 <span class="page"
                       :class="key==activePage?'active':false"
