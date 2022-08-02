@@ -136,6 +136,8 @@ span.active_text{
     cursor: pointer;
 }
 
+
+
 .select_lang .close {
     font-size: 0.6em;
     padding: 2px 5px;
@@ -300,4 +302,61 @@ span.active_text{
     color: #008f86;
     font-weight: 500;
     cursor: auto;
+}
+
+.mobile_hamburger_field{
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .pagiantion_control {
+        flex-direction: column;
+        align-items: baseline;
+    }
+    .pagiantion_control>div{
+        margin:  5px 0px;
+    }
+    .tags{
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .tags>div{
+        margin:  5px 2px;
+    }
+    .header{
+        display: block;
+    }
+    .mobile_hamburger_field{
+        display: block;
+        width: 100%;
+
+    }
+    .hamburger{
+        height: 20px;
+        width: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-left: auto;
+        position: relative;
+    }
+    .hamburger span{
+        border: 1px solid;
+        transition: 0.3s;
+    }
+    .hamburger.open span:nth-child(1){
+        transform: rotate(45deg);
+        position: absolute;
+        top: 10px;
+        width: 25px;
+    }
+    .hamburger.open span:nth-child(3){
+        transform: rotate(-45deg);
+        position: absolute;
+        top: 10px;
+        width: 25px;
+    }
+    .hamburger.open span:nth-child(2){
+        display: none;
+    }
 }

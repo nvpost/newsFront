@@ -20,10 +20,6 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новости</title>
 
-<!--    <script src="assets/materialize/materialize.js"></script>-->
-<!--    <link rel="stylesheet" href="assets/materialize/materialize.css"></link>-->
-
-<!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -43,164 +39,128 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
             <div class="preloader"></div>
         </div>
 
-
-
-        <div class="info">
-            <div class="header">
-                <div class="news_counter">
-                    Всего новостей: {{news.length}} из {{newsCount}}
-                </div>
-                <div class="select_view">Вид:
-                    <span :class="viewMode=='table'?'active_view':''" @click="viewMode='table'">таблица</span>
-                    /
-                    <span :class="viewMode=='grid'?'active_view':''" @click="viewMode='grid'">плитка с картинками</span>
-                </div>
-
-<!--                <div class="select_lang">-->
-<!--                    <span v-for="(lang, index) in langs" @click="addLang(lang)"-->
-<!--                          :class="lang==activeLang?'active_text':''">{{lang}}</span>-->
-<!--                    <span class="close" v-if="activeLang" @click="addLang('off')">X</span>-->
-<!--                </div>-->
-            </div>
-
-            <div class="actions">
-                <div class="tags" v-if="!site.name">
-                    <div
-                            v-for="(count, key) in tags"
-                            class="tag"
-                            :class="setTagClass(key)"
-                            @click="addTag(key)"
-                    >{{key}} {{count}}
-
-                    </div>
-                </div>
-                <div class="site_info" v-else>
-                    Новости компании: <a :href="site.data.link" target="_blank">{{site.name}}</a>,
-                    группа: {{site.data.category}},
-                    язык: {{site.data.lang}}
-                    <span class="close" @click="closeSite()"> X </span>
-                </div>
-
-                <div class="sites">
-                    <select
-                            name="sites"
-                            @change="setSite($event)"
-                    >
-                        <option>Сайт</option>
-                        <option v-for="(count, key) in sites"
-                                :value="key">{{key}} ({{count.lang}} / {{count.tags}}) - {{count.count}}</option>
-                    </select>
-                </div>
+        <div class="mobile_hamburger_field">
+            <div class="hamburger" onclick="openMobileMenu(this)">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-        <div class="pagiantion_control">
-            <div class="rows_lenght_field">
-                <p>
-                    Показывать по:
-                <select name="rows_lenght" v-model="limit" @change="getNews(limit)">
-                    <option value="100"">100</option>
-                    <option value="200">200</option>
-                    <option value="500">500</option>
-                    <option value="1000">1000</option>
-                    <option value="all">все</option>
+        <div class="top_actions">
+            <div class="info">
+                <div class="header">
+                    <div class="news_counter">
+                        Всего новостей: <span class="news_counter_field">{{news.length}} из {{newsCount}}</span>
+                    </div>
+                    <div class="select_view">Вид:
+                        <span class="view_mode__field">
+                            <span :class="viewMode=='table'?'active_view':''" @click="viewMode='table'">таблица</span>
+                            /
+                            <span :class="viewMode=='grid'?'active_view':''" @click="viewMode='grid'">плитка с картинками</span>
+                        </span>
+                    </div>
 
-                </select>
-                </p>
-            </div>
-            <div class="date_select_wrapper">
-                <div class="date_selector">
-                    <select name="date_type" id="date_type" @change="newsDateSelector($event)">
-                        <option value="news_date">Дата новости</option>
-                        <option value="parse_date">Дата парсинга</option>
-                    </select>
                 </div>
-                    <div class="datepickers" id="news_date">
-                        <vuejs-datepicker :language="ru"
-                                          v-model="newsDate.start"
-                                          :clear-button="true"
-                                          placeholder="Старт"
-                                          calendar-class="calendar_class"
-                                          @input="setDates()"
-                        ></vuejs-datepicker>
-                        <vuejs-datepicker :language="ru"
-                                          v-model="newsDate.stop"
-                                          :clear-button="true"
-                                          placeholder="Стоп"
-                                          @input="setDates()"
-                        ></vuejs-datepicker>
+
+                <div class="actions">
+                    <div class="tags" v-if="!site.name">
+                        <div
+                                v-for="(count, key) in tags"
+                                class="tag"
+                                :class="setTagClass(key)"
+                                @click="addTag(key)"
+                        >{{key}} {{count}}
+
+                        </div>
+                    </div>
+                    <div class="site_info" v-else>
+                        Новости компании: <a :href="site.data.link" target="_blank">{{site.name}}</a>,
+                        группа: {{site.data.category}},
+                        язык: {{site.data.lang}}
+                        <span class="close" @click="closeSite()"> X </span>
                     </div>
 
-
-                    <div class="datepickers" id="parse_date" style="display:none">
-                        <vuejs-datepicker :language="ru"
-                                          v-model="parseDate.start"
-                                          :clear-button="true"
-                                          placeholder="Старт"
-                                          calendar-class="calendar_class"
-                                          @input="setDates()"
-
-                        ></vuejs-datepicker>
-                        <vuejs-datepicker :language="ru"
-                                          v-model="parseDate.stop"
-                                          :clear-button="true"
-                                          placeholder="Стоп"
-                                          @input="setDates()"
-                        ></vuejs-datepicker>
+                    <div class="sites">
+                        <select
+                                name="sites"
+                                @change="setSite($event)"
+                        >
+                            <option>Сайт</option>
+                            <option v-for="(count, key) in sites"
+                                    :value="key">{{key}} ({{count.lang}} / {{count.tags}}) - {{count.count}}</option>
+                        </select>
                     </div>
-
-
+                </div>
             </div>
-            <div class="pagination">
-                <span class="page"
-                      :class="key==activePage?'active':false"
-                      @click="getNewPage(key)"
-                      v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
+            <div class="pagiantion_control">
+                <div class="rows_lenght_field">
+                    <p>
+                        Показывать по:
+                    <select name="rows_lenght" v-model="limit" @change="getNews(limit)">
+                        <option value="100"">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                        <option value="all">все</option>
+
+                    </select>
+                    </p>
+                </div>
+                <div class="date_select_wrapper">
+                    <div class="date_selector">
+                        <select name="date_type" id="date_type" @change="newsDateSelector($event)">
+                            <option value="news_date">Дата новости</option>
+                            <option value="parse_date">Дата парсинга</option>
+                        </select>
+                    </div>
+                        <div class="datepickers" id="news_date">
+                            <vuejs-datepicker :language="ru"
+                                              v-model="newsDate.start"
+                                              :clear-button="true"
+                                              placeholder="Старт"
+                                              calendar-class="calendar_class"
+                                              @input="setDates()"
+                            ></vuejs-datepicker>
+                            <vuejs-datepicker :language="ru"
+                                              v-model="newsDate.stop"
+                                              :clear-button="true"
+                                              placeholder="Стоп"
+                                              @input="setDates()"
+                            ></vuejs-datepicker>
+                        </div>
+
+
+                        <div class="datepickers" id="parse_date" style="display:none">
+                            <vuejs-datepicker :language="ru"
+                                              v-model="parseDate.start"
+                                              :clear-button="true"
+                                              placeholder="Старт"
+                                              calendar-class="calendar_class"
+                                              @input="setDates()"
+
+                            ></vuejs-datepicker>
+                            <vuejs-datepicker :language="ru"
+                                              v-model="parseDate.stop"
+                                              :clear-button="true"
+                                              placeholder="Стоп"
+                                              @input="setDates()"
+                            ></vuejs-datepicker>
+                        </div>
+
+
+                </div>
+                <div class="pagination">
+                    <span class="page"
+                          :class="key==activePage?'active':false"
+                          @click="getNewPage(key)"
+                          v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
+                </div>
             </div>
         </div>
         <gridview :news="news" v-if="viewMode=='grid'"></gridview>
         <tableview :news="news" v-if="viewMode=='table'"></tableview>
-<!--        <table class="table">-->
-<!--            <tr>-->
-<!--                <th>Направление</th>-->
-<!---->
-<!---->
-<!--                <th>Язык</th>-->
-<!--                <th>Компания</th>-->
-<!--                <th>Дата</th>-->
-<!--                <th>Дата парсинга</th>-->
-<!--                <th>Новость</th>-->
-<!--            </tr>-->
-<!--            <tr v-for = "(post, i) in news">-->
-<!--                <td>-->
-<!--                    <span-->
-<!--                            v-for="tag in post.group_id.split(',')"-->
-<!--                            class="table_tag"-->
-<!--                            @click = "addTag(tag, true)"-->
-<!--                    >-->
-<!--                       {{tag}}-->
-<!--                    </span>-->
-<!--                </td>-->
-<!---->
-<!---->
-<!--                <td><span @click="addLang(post.lang)"-->
-<!--                          class="table_lang"-->
-<!--                    >{{post.lang}}</span></td>-->
-<!--                <td>-->
-<!--                    <span-->
-<!--                            @click="setSite($event, post.site_id)"-->
-<!--                            class="table_tag">-->
-<!--                        {{post.site_id}}-->
-<!--                    </span>-->
-<!--                </td>-->
-<!--                <td class="date">{{date_tranform(post.news_date)}}</td>-->
-<!--                <td class="date">{{date_tranform(post.parse_date)}}</td>-->
-<!--                <td>-->
-<!--                    <a :href="post.link" target="_blank">-->
-<!--                        {{post.title}}-->
-<!--                    </a>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--        </table>-->
+
         <div class="pagination">
                 <span class="page"
                       :class="key==activePage?'active':false"
@@ -212,13 +172,19 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 </div>
 </body>
 
-<script src="js/js.js"></script>
+<script src="js/js.js?3"></script>
 
 <script>
-
-
-
+    function openMobileMenu(e){
+        console.log(e)
+        if (e.classList.contains('open')){
+            e.classList.remove('open')
+        }else{
+            e.classList.add('open')
+        }
+    }
 </script>
+
 
 
 

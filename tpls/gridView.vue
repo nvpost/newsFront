@@ -1,5 +1,4 @@
 <template>
-
     <div class="grid_field">
 
       <a
@@ -47,8 +46,8 @@ module.exports = {
 }
 </script>
 
+<style scoped>
 
-<style>
 .grid_field{
   display: flex;
   flex-wrap: wrap;
@@ -109,5 +108,13 @@ module.exports = {
   overflow: hidden;
 
 }
+@media screen and (max-width: 600px) {
+  .news_item_link {
+    width: 100% !important;
+  }
+}
+
 </style>
+
+
 

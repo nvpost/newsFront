@@ -20,7 +20,7 @@ let app = new Vue({
             'langs':[],
             'activeLang':"",
             'preloader': true,
-            'limit': 200,
+            'limit': 300,
             'newsCount':0,
             'activePage':0,
             'news_date_selector':true,
@@ -45,14 +45,14 @@ let app = new Vue({
                     stop: new Date()
                 },
             },
-            viewMode: "table"
+            viewMode: "grid"
 
 
         }
     },
     components: {
         vuejsDatepicker,
-        gridview: httpVueLoader('tpls/gridView.vue'),
+        gridview: httpVueLoader('tpls/gridView.vue?1'),
         tableview: httpVueLoader('tpls/tableview.vue')
     },
 
