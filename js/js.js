@@ -80,6 +80,16 @@ let app = new Vue({
 
     methods:{
 
+        PagesChuncs(activePage){
+            let pages = Math.ceil(this.newsCount/this.limit)
+            range = [];
+            if(pages < activePage+5){
+                return pages
+            }else{
+                return activePage+5
+            }
+        },
+
         getNews(l=this.limit, offset=0){
             // let l = this.limit ? this.limit : 100;
             activeTagsForSQL = this.activeTags.map(i=>{return "'%"+i+"%'"})

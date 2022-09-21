@@ -151,10 +151,13 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
 
                 </div>
                 <div class="pagination">
+                    <span class="page" @click="getNewPage(activePage-1)" v-if="activePage>0"> < </span>
                     <span class="page"
                           :class="key==activePage?'active':false"
                           @click="getNewPage(key)"
-                          v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
+                          v-for="(p,key) in PagesChuncs(activePage)">{{p}}</span>
+                    <span class="page" @click="getNewPage(activePage+1)"
+                          v-if="activePage+1 < Math.ceil(this.newsCount/this.limit)"> > </span>
                 </div>
             </div>
         </div>
@@ -165,16 +168,18 @@ if(isset($_POST['own_log']) && log_func($_POST['own_log'])){
                 <span class="page"
                       :class="key==activePage?'active':false"
                       @click="getNewPage(key)"
-                      v-for="(p, key) in Math.ceil(newsCount/limit)">{{p}}</span>
+                      v-for="(p,key) in PagesChuncs(activePage)">{{p}}</span>
         </div>
 
     </div>
 </div>
 </body>
 
-<script src="js/js.js?3"></script>
+<script src="js/js.js?4"></script>
 
 <script>
+
+
     function openMobileMenu(e){
         console.log(e)
         if (e.classList.contains('open')){
